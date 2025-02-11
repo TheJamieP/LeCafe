@@ -1,6 +1,6 @@
 
 const { Client, GatewayIntentBits } = require("discord.js");
-const { Token, Prefix } = require("./Secret/Config.json");
+const { Token, Prefix } = require("./Config/Config.json");
 const { readdirSync } = require("fs");
 
 const client: typeof Client = new Client({
