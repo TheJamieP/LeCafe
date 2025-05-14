@@ -10,7 +10,7 @@ export default async (message: any, args: string[]): Promise<void> => {
     else car = args[0]
 
 
-    const R = fetch(`localhost:3000/api/image/?car=${car.toLowerCase()}`, {method: "GET"})
+    const R = fetch(`localhost:3022/api/image/?car=${car.toLowerCase()}`, {method: "GET"})
     .then(async (res) => {
         return res.json()
     })
@@ -25,16 +25,4 @@ export default async (message: any, args: string[]): Promise<void> => {
     
     await R
 
-    /*
-    fetch(`https://gta.vercel.app/api/vehicles/${car.toLowerCase()}`, {
-        "method": "GET"
-    }).then((res) => res.json() as Promise<Car>).then( async (res: Car) => {
-        if (!res) return;
-        Object.values(res.images).forEach(async (image:string) => {
-            await message.channel.send(image);
-        })
-    }).catch(async (err) => {
-        await message.reply("Please include a valid vehicle name, e.g: $fetchcar adder")
-    })
-    */
 };

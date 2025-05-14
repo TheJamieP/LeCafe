@@ -1,7 +1,14 @@
 
 const { Client, GatewayIntentBits } = require("discord.js");
-const { Token, Prefix } = require("./Config/Config.json");
+const { Prefix } = require("./Config/Config.json");
 const { readdirSync } = require("fs");
+
+import { Database } from "bun:sqlite";
+
+
+require('dotenv').config();
+
+export const db = new Database("./db/cache.sqlite", {create: true});
 
 const client: typeof Client = new Client({
   intents: [
@@ -33,8 +40,21 @@ const createHandlerArray = (path: string, handlerArray: Handler[]): Handler[] =>
 
 let commandHandlers: Handler[] = createHandlerArray("./commands/", []);
 
+const checkTables = (db: Database) => {  
+  // db.run("DROP TABLE DailyBrainrotCache")
+  db.run(
+    `
+  CREATE TABLE IF NOT EXISTS DailyBrainrotCache (
+    ID varchar(255) NOT NULL,
+    Expiry DATETIME NOT NULL,
+    Character VARCHAR(64) NOT NULL,
+    Primary Key (ID)
+  )`);
+}
+
 client.on("ready", () => {
   console.log("Bot is ready");
+  checkTables(db);
 });
 
 client.on("messageCreate", async (message: any) => {
@@ -49,4 +69,4 @@ client.on("messageCreate", async (message: any) => {
   });
 });
 
-client.login(Token);
+client.login(process.env.TOKEN);
